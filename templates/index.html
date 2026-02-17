@@ -1,32 +1,34 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="./static/mywebscript.js"></script>
+    <title>Emotion Detector</title>
     <style>
-        .center-heading {
-            text-align: center;
-        }
+        body { font-family: sans-serif; background: #764ba2; color: white; text-align: center; padding-top: 50px; }
+        .card { background: white; color: #333; padding: 30px; border-radius: 15px; display: inline-block; width: 80%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        textarea { width: 100%; margin-bottom: 20px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #667eea; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        #system_response { margin-top: 20px; font-weight: bold; line-height: 1.6; }
     </style>
+    <script>
+        let runSentimentAnalysis = () =>{
+            let textToAnalyze = document.getElementById("textToAnalyze").value;
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("system_response").innerHTML = xhttp.responseText;
+                }
+            };
+            xhttp.open("GET", "emotionDetector?textToAnalyze"+"="+textToAnalyze, true);
+            xhttp.send();
+        }
+    </script>
 </head>
 <body>
     <div class="card">
-        <div class="card-body">
-            <h1 class="center-heading">NLP - Emotion Detection</h1> 
-            <div style="padding: 25px 25px 25px 25px;">
-            <h2 class="mb-3">
-                <label class="form-label">Please enter the text to be analyzed</label>
-                <input type="textarea" class="form-control" id="textToAnalyze">
-            </h2>
-
-            <div style="padding: 25px 25px 25px 25px;">
-                <button onclick="RunSentimentAnalysis()" class="btn btn-secondary">Run Sentiment Analysis</button>
-            </div>
-            <div style="padding: 25px 25px 25px 25px;"></div>
-            <h2 class="mb-3">
-                <label class="form-label">Result of Emotion Detection</label>
-            </h2>
-
-            <div id="system_response" style="padding: 25px 25px 25px 25px;"></div>
-        </div>
+        <h1>Emotion Detector</h1>
+        <textarea id="textToAnalyze" rows="4" placeholder="Enter text here..."></textarea><br>
+        <button onclick="runSentimentAnalysis()">Run Analysis</button>
+        <div id="system_response"></div>
     </div>
 </body>
+</html>
